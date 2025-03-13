@@ -1,0 +1,46 @@
+func (ps performanceLevelService) computeProvisionSummary(plUsage repository.PerformanceLevels) codegen.ProvisionSummary {
+    allowedLevels := map[string]bool{
+        "extreme":  true,
+        "standard": true,
+        "premium":  true,
+        "object":   true,
+    }
+
+    var overProvisioned []codegen.ProvisionedSubscription
+    var underProvisioned []codegen.ProvisionedSubscription
+
+    for _, usage := range plUsage {
+        level := strings.ToLower(usage.PerformanceLevel)
+        if !allowedLevels[level] {
+            continue
+        }
+
+        provisionRatio := usage.ConsumedCapacity / usage.ProvisionedCapacity
+        subSummary := codegen.ProvisionedSubscription{
+            SubscriptionNumber: usage.SubscriptionNumber,
+            CustomerName:       usage.CustomerName,
+            PerformanceLevel:   level,
+            CommittedCapacity:  usage.CommittedCapacity,
+            ConsumedCapacity:   usage.ConsumedCapacity,
+            ProvisionedCapacity: usage.ProvisionedCapacity,
+            AlertMonitoring:    usage.AlertMonitoring,
+        }
+
+        if provisionRatio > 1.0 {
+            overProvisioned = append(overProvisioned, subSummary)
+        } else if provisionRatio < 0.5 {
+            underProvisioned = append(underProvisioned, subSummary)
+        }
+    }
+
+    return codegen.ProvisionSummary{
+        OverProvisioned: codegen.ProvisionedData{
+            Count:         len(overProvisioned),
+            Subscriptions: overProvisioned,
+        },
+        LessThan50PercentProvisioned: codegen.ProvisionedData{
+            Count:         len(underProvisioned),
+            Subscriptions: underProvisioned,
+        },
+    }
+}
