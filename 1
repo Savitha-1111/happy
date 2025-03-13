@@ -1,0 +1,33 @@
+func (ps performanceLevelService) computePerformanceLevelSummary(plUsage repository.PerformanceLevels) []codegen.PerformanceLevelSummary {
+    allowedLevels := map[string]bool{
+        "extreme":  true,
+        "standard": true,
+        "premium":  true,
+        "object":   true,
+    }
+
+    summaryMap := make(map[string]int)
+    subscriptionsMap := make(map[string][]codegen.SubscriptionSummary)
+
+    for _, perf := range plUsage {
+        level := strings.ToLower(perf.PerformanceLevel)
+        if allowedLevels[level] {
+            summaryMap[level]++
+            subscriptionsMap[level] = append(subscriptionsMap[level], codegen.SubscriptionSummary{
+                SubscriptionNumber: perf.SubscriptionNumber,
+                CustomerName:       perf.CustomerName,
+            })
+        }
+    }
+
+    var summaryList []codegen.PerformanceLevelSummary
+    for level, count := range summaryMap {
+        summaryList = append(summaryList, codegen.PerformanceLevelSummary{
+            PerformanceLevel:  level,
+            SubscriptionCount: count,
+            Subscriptions:     subscriptionsMap[level],
+        })
+    }
+
+    return summaryList
+}
