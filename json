@@ -1,0 +1,108 @@
+{
+  "status": {
+    "code": 200,
+    "user_message": "Request successful.",
+    "verbose_message": "Performance levels fetched successfully."
+  },
+  "result": [
+    {
+      "subscription_number": "A-S00021371",
+      "customer_name": "Customer A",
+      "timestamp": "2023-03-13T12:00:00Z",
+      "performance_levels": [
+        {
+          "performance_level": "premium",
+          "volumes": 10,
+          "provisioned_capacity": 1000.5,
+          "committed_capacity": 900.0,
+          "consumed_capacity": 850.0,
+          "available_capacity": 150.0,
+          "available_capacity_with_burst": 170.0,
+          "accrued_burst_capacity": 50.0,
+          "aqos_compliant_volumes_count": 8,
+          "aqos_compliant_volumes": [
+            {"volume_name": "vol1"},
+            {"volume_name": "vol2"}
+          ],
+          "aqos_non_compliant_volumes_count": 2,
+          "aqos_non_compliant_volumes": [
+            {"volume_name": "vol3"},
+            {"volume_name": "vol4"}
+          ]
+        }
+      ],
+      "summary": {
+        "performance_level_summary": [
+          {
+            "performance_level": "Standard",
+            "subscription_count": 5,
+            "subscriptions": [
+              {
+                "subscription_number": "A-S00012345",
+                "customer_name": "Customer A"
+              }
+            ]
+          },
+          {
+            "performance_level": "Extreme",
+            "subscription_count": 3,
+            "subscriptions": [
+              {
+                "subscription_number": "A-S00067890",
+                "customer_name": "Customer C"
+              }
+            ]
+          },
+          {
+            "performance_level": "Premium",
+            "subscription_count": 8,
+            "subscriptions": [
+              {
+                "subscription_number": "A-S00099877",
+                "customer_name": "Customer D"
+              }
+            ]
+          },
+          {
+            "performance_level": "Object",
+            "subscription_count": 2,
+            "subscriptions": [
+              {
+                "subscription_number": "A-S00044556",
+                "customer_name": "Customer E"
+              }
+            ]
+          }
+        ],
+        "provision_summary": {
+          "over_provisioned": {
+            "count": 4,
+            "subscriptions": [
+              {
+                "subscription_number": "A-S00077777",
+                "customer_name": "Customer F",
+                "performance_level": "Extreme",
+                "committed_capacity": 5000,
+                "consumed_capacity": 6000,
+                "alert_monitoring": "Exceeded committed capacity"
+              }
+            ]
+          },
+          "less_than_50_percent_provisioned": {
+            "count": 3,
+            "subscriptions": [
+              {
+                "subscription_number": "A-S00099999",
+                "customer_name": "Customer H",
+                "performance_level": "Standard",
+                "provisioned_capacity": 8000,
+                "consumed_capacity": 3000,
+                "alert_monitoring": "Under-utilization warning"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
